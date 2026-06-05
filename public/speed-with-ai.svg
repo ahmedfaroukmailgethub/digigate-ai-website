@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" role="img" aria-label="Speed with AI">
+  <defs>
+    <linearGradient id="swai-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="55%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="swai-grad-soft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+  </defs>
+
+  <g font-family="'Space Grotesk', 'Inter', system-ui, -apple-system, Segoe UI, sans-serif" font-weight="700">
+    <!-- SPEED — italicized, motion-leaning -->
+    <text x="0" y="78"
+          font-size="72"
+          letter-spacing="-3"
+          fill="url(#swai-grad-soft)"
+          transform="skewX(-10)">
+      Speed
+    </text>
+
+    <!-- with — light, lowercase connector -->
+    <text x="232" y="78"
+          font-size="34"
+          font-weight="400"
+          letter-spacing="0"
+          fill="#64748b"
+          font-style="italic">
+      with
+    </text>
+
+    <!-- AI — bold gradient, the payoff word -->
+    <text x="318" y="84"
+          font-size="86"
+          letter-spacing="-4"
+          fill="url(#swai-grad)">
+      AI
+    </text>
+  </g>
+
+  <!-- motion underline accent under SPEED -->
+  <g>
+    <rect x="0" y="92" width="210" height="3" rx="1.5" fill="url(#swai-grad)" opacity="0.85"/>
+    <rect x="214" y="92" width="14" height="3" rx="1.5" fill="url(#swai-grad)" opacity="0.55"/>
+    <rect x="232" y="92" width="6" height="3" rx="1.5" fill="url(#swai-grad)" opacity="0.3"/>
+  </g>
+</svg>

@@ -1,0 +1,105 @@
+<svg width="640" height="640" viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="body" x1="120" y1="320" x2="520" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0.00" stop-color="#3a1530"/>
+      <stop offset="0.10" stop-color="#5a1a35"/>
+      <stop offset="0.22" stop-color="#3b0f3a"/>
+      <stop offset="0.40" stop-color="#2a0a48"/>
+      <stop offset="0.58" stop-color="#3b0f6a"/>
+      <stop offset="0.78" stop-color="#5b1fb0"/>
+      <stop offset="0.92" stop-color="#7a35d6"/>
+      <stop offset="1.00" stop-color="#3a1f78"/>
+    </linearGradient>
+
+    <linearGradient id="topWarm" x1="140" y1="240" x2="500" y2="260" gradientUnits="userSpaceOnUse">
+      <stop offset="0.00" stop-color="#ffb968" stop-opacity="0"/>
+      <stop offset="0.08" stop-color="#ffc070" stop-opacity="0.95"/>
+      <stop offset="0.28" stop-color="#ff8a4a" stop-opacity="0.85"/>
+      <stop offset="0.46" stop-color="#ff7a5c" stop-opacity="0.55"/>
+      <stop offset="0.60" stop-color="#7a2a90" stop-opacity="0"/>
+      <stop offset="0.78" stop-color="#a96bff" stop-opacity="0.55"/>
+      <stop offset="1.00" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <radialGradient id="centerFlame" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(320 290) rotate(0) scale(95 60)">
+      <stop offset="0.00" stop-color="#ffd07a" stop-opacity="0.95"/>
+      <stop offset="0.45" stop-color="#ff7a3a" stop-opacity="0.55"/>
+      <stop offset="1.00" stop-color="#3a0f4a" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="cyanRim" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(498 360) rotate(150) scale(110 55)">
+      <stop offset="0.00" stop-color="#5af0ff" stop-opacity="0.95"/>
+      <stop offset="0.40" stop-color="#3a7dff" stop-opacity="0.55"/>
+      <stop offset="1.00" stop-color="#2a0a78" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="warmRim" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(165 360) rotate(-15) scale(115 60)">
+      <stop offset="0.00" stop-color="#ffb060" stop-opacity="0.85"/>
+      <stop offset="0.55" stop-color="#a02a5a" stop-opacity="0.35"/>
+      <stop offset="1.00" stop-color="#1a0420" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="underShade" x1="320" y1="280" x2="320" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.55"/>
+    </linearGradient>
+
+    <linearGradient id="violetEdge" x1="360" y1="320" x2="520" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7a2adf" stop-opacity="0"/>
+      <stop offset="0.45" stop-color="#9a4cff" stop-opacity="0.85"/>
+      <stop offset="0.90" stop-color="#6a25c0" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#2a0a78" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="soft" x="40" y="140" width="560" height="360" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+
+    <filter id="glow" x="0" y="100" width="640" height="440" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+
+    <symbol id="inf" overflow="visible">
+      <path d="
+        M 320 320
+        C 280 240, 200 200, 150 240
+        C 90 290, 90 380, 150 410
+        C 210 440, 280 400, 320 320
+        C 360 240, 430 200, 490 230
+        C 550 260, 550 360, 490 400
+        C 440 430, 360 400, 320 320 Z"/>
+    </symbol>
+  </defs>
+
+  <g opacity="0.55" filter="url(#glow)">
+    <use href="#inf" fill="#5a1f9a"/>
+  </g>
+
+  <use href="#inf" fill="url(#body)"/>
+  <use href="#inf" fill="url(#underShade)"/>
+  <use href="#inf" fill="url(#warmRim)"/>
+  <use href="#inf" fill="url(#cyanRim)"/>
+  <use href="#inf" fill="url(#violetEdge)"/>
+
+  <g filter="url(#soft)">
+    <path d="M 150 250
+             C 110 290, 110 360, 160 395
+             M 168 245
+             C 220 220, 280 250, 312 308
+             M 328 308
+             C 360 250, 420 220, 472 245
+             M 490 250
+             C 540 285, 540 355, 488 395"
+          stroke="url(#topWarm)" stroke-width="22" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <use href="#inf" fill="url(#centerFlame)"/>
+
+  <path d="M 168 252
+           C 220 228, 282 258, 312 312
+           C 348 258, 412 228, 470 252"
+        stroke="#ffd9a8" stroke-opacity="0.55" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+  <path d="M 522 330 C 530 350, 526 378, 506 396"
+        stroke="#9ff6ff" stroke-opacity="0.85" stroke-width="5" stroke-linecap="round" fill="none"/>
+</svg>

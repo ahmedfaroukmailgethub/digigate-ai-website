@@ -1,0 +1,7 @@
+node_modules/
+dist/
+__MACOSX/
+*.timestamp-*.mjs
+tsconfig.tsbuildinfo
+.DS_Store
+*.tmp.*
