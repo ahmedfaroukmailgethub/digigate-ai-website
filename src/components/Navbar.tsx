@@ -12,6 +12,27 @@ const links = [
   { label: 'Careers', href: '/careers' },
 ]
 
+const productLinks = [
+  { label: 'Documents Management System',           href: '/products/documents-management-system' },
+  { label: 'Correspondence Management System',      href: '/products/correspondence-management-system' },
+  { label: 'Records Management System',             href: '/products/records-management-system' },
+  { label: 'Workflow Engine',                        href: '/products/workflow-engine' },
+  { label: 'Information Right Management System',   href: '/products/information-right-management-system' },
+  { label: 'Standard Capture Tool',                 href: '/products/standard-capture-tool' },
+  { label: 'Advanced Viewer Tool',                  href: '/products/advanced-viewer-tool' },
+  { label: 'Data Storage Optimization Tool',        href: '/products/data-storage-optimization-tool' },
+  { label: 'Integration Enabler Module',            href: '/products/integration-enabler-module' },
+  { label: 'Artificial Intelligence Engines',       href: '/products/artificial-intelligence-engines' },
+  { label: 'Intelligent Automation Module',         href: '/products/intelligent-automation-module' },
+  { label: 'Intelligent Documents Recognition Engine', href: '/products/intelligent-documents-recognition-engine' },
+  { label: 'Intelligent Document Capture Module',   href: '/products/intelligent-document-capture-module' },
+  { label: 'Intelligent Data Extraction Module',    href: '/products/intelligent-data-extraction-module' },
+  { label: 'Intelligent Document Exporting Module', href: '/products/intelligent-document-exporting-module' },
+  { label: 'Intelligent Documents Classification Engine', href: '/products/intelligent-documents-classification-engine' },
+  { label: 'Voice Recognition Engine',              href: '/products/voice-recognition-engine' },
+  { label: 'Education Platform',                     href: '/products/education-platform' },
+]
+
 const aboutLinks = [
   { label: 'About DigiGate',       href: '/about' },
   { label: 'DigiGate Intro',       href: '/about/intro' },
@@ -26,6 +47,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [sectorsOpen, setSectorsOpen] = useState(false)
   const [aboutOpen, setAboutOpen] = useState(false)
+  const [productsOpen, setProductsOpen] = useState(false)
   const location = useLocation()
   const [primaryLink, ...secondaryLinks] = links
 
@@ -40,6 +62,7 @@ export default function Navbar() {
     setOpen(false)
     setSectorsOpen(false)
     setAboutOpen(false)
+    setProductsOpen(false)
   }, [location.pathname])
 
   const solid = scrolled || location.pathname !== '/'
@@ -70,63 +93,6 @@ export default function Navbar() {
             {primaryLink.label}
             <span className="absolute inset-x-4 bottom-1 h-px bg-gradient-to-r from-brand-400 to-accent-400 scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
           </a>
-
-          <div
-            className="relative"
-            onMouseEnter={() => setSectorsOpen(true)}
-            onMouseLeave={() => setSectorsOpen(false)}
-          >
-            <NavLink
-              to="/sectors"
-              className={({ isActive }) =>
-                `inline-flex items-center gap-1 px-4 py-2 text-sm transition-colors ${
-                  isActive ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
-                }`
-              }
-            >
-              Sectors
-              <ChevronDown size={14} className={`transition-transform ${sectorsOpen ? 'rotate-180' : ''}`} />
-            </NavLink>
-            <AnimatePresence>
-              {sectorsOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[420px]"
-                >
-                  <div className="rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-white/10 p-2 shadow-2xl shadow-black/60">
-                    {sectors.map((s) => (
-                      <Link
-                        key={s.slug}
-                        to={`/sectors/${s.slug}`}
-                        className="group flex items-center gap-3 p-3 rounded-xl hover:bg-brand-500/10 transition-colors"
-                      >
-                        <span className="relative w-11 h-11 rounded-lg overflow-hidden shrink-0 ring-1 ring-white/10 transition group-hover:ring-brand-300/50">
-                          <img
-                            src={s.image}
-                            alt={s.imageAlt}
-                            loading="lazy"
-                            className="absolute inset-0 w-full h-full object-cover brightness-50 transition duration-300 group-hover:brightness-75 group-hover:saturate-125"
-                          />
-                          <span className="absolute inset-0 bg-black/30 transition group-hover:bg-black/15" />
-                          <span className={`absolute inset-0 bg-gradient-to-br ${s.accent} mix-blend-multiply opacity-45 transition group-hover:opacity-70`} />
-                          <span className="absolute inset-0 grid place-items-center">
-                            <SectorIcon iconKey={s.iconKey} className="w-4 h-4 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
-                          </span>
-                        </span>
-                        <div className="min-w-0">
-                          <p className="text-sm font-medium text-white transition-colors group-hover:text-brand-100">{s.name}</p>
-                          <p className="text-xs text-slate-400 truncate transition-colors group-hover:text-slate-200">{s.tagline}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
 
           {/* About dropdown */}
           <div
@@ -170,16 +136,123 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          {secondaryLinks.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="relative px-4 py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors group"
+          {/* Products dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setProductsOpen(true)}
+            onMouseLeave={() => setProductsOpen(false)}
+          >
+            <NavLink
+              to="/products"
+              className={({ isActive }) =>
+                `inline-flex items-center gap-1 px-4 py-2 text-sm transition-colors ${
+                  isActive ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
+                }`
+              }
             >
-              {l.label}
-              <span className="absolute inset-x-4 bottom-1 h-px bg-gradient-to-r from-brand-400 to-accent-400 scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
-            </a>
-          ))}
+              Products
+              <ChevronDown size={14} className={`transition-transform ${productsOpen ? 'rotate-180' : ''}`} />
+            </NavLink>
+            <AnimatePresence>
+              {productsOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute top-full left-0 pt-3 w-[540px]"
+                >
+                  <div className="rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-white/10 p-3 shadow-2xl shadow-black/60">
+                    <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-brand-400">DigiGate Products</p>
+                    <div className="grid grid-cols-2 gap-0.5">
+                      {productLinks.map((item) => (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-slate-300 hover:text-white hover:bg-brand-500/10 transition-colors leading-tight"
+                        >
+                          <span className="h-1 w-1 rounded-full bg-brand-400 shrink-0" />
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Services link */}
+          <a
+            href="/services"
+            className="relative px-4 py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors group"
+          >
+            Services
+            <span className="absolute inset-x-4 bottom-1 h-px bg-gradient-to-r from-brand-400 to-accent-400 scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
+          </a>
+
+          {/* Sectors dropdown — before Careers */}
+          <div
+            className="relative"
+            onMouseEnter={() => setSectorsOpen(true)}
+            onMouseLeave={() => setSectorsOpen(false)}
+          >
+            <NavLink
+              to="/sectors"
+              className={({ isActive }) =>
+                `inline-flex items-center gap-1 px-4 py-2 text-sm transition-colors ${
+                  isActive ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
+                }`
+              }
+            >
+              Sectors
+              <ChevronDown size={14} className={`transition-transform ${sectorsOpen ? 'rotate-180' : ''}`} />
+            </NavLink>
+            <AnimatePresence>
+              {sectorsOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[420px]"
+                >
+                  <div className="rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-white/10 p-2 shadow-2xl shadow-black/60">
+                    {sectors.map((s) => (
+                      <Link
+                        key={s.slug}
+                        to={`/sectors/${s.slug}`}
+                        className="group flex items-center gap-3 p-3 rounded-xl hover:bg-brand-500/10 transition-colors"
+                      >
+                        <span className="relative w-11 h-11 rounded-lg overflow-hidden shrink-0 ring-1 ring-white/10 transition group-hover:ring-brand-300/50">
+                          <img src={s.image} alt={s.imageAlt} loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover brightness-50 transition duration-300 group-hover:brightness-75 group-hover:saturate-125" />
+                          <span className="absolute inset-0 bg-black/30 transition group-hover:bg-black/15" />
+                          <span className={`absolute inset-0 bg-gradient-to-br ${s.accent} mix-blend-multiply opacity-45 transition group-hover:opacity-70`} />
+                          <span className="absolute inset-0 grid place-items-center">
+                            <SectorIcon iconKey={s.iconKey} className="w-4 h-4 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]" />
+                          </span>
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-white transition-colors group-hover:text-brand-100">{s.name}</p>
+                          <p className="text-xs text-slate-400 truncate transition-colors group-hover:text-slate-200">{s.tagline}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Careers link */}
+          <a
+            href="/careers"
+            className="relative px-4 py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors group"
+          >
+            Careers
+            <span className="absolute inset-x-4 bottom-1 h-px bg-gradient-to-r from-brand-400 to-accent-400 scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
+          </a>
         </div>
 
         <div className="hidden md:flex items-center gap-3">
@@ -225,6 +298,13 @@ export default function Navbar() {
                 >
                   <SectorIcon iconKey={s.iconKey} className="w-4 h-4 text-brand-300" />
                   <span>{s.name}</span>
+                </Link>
+              ))}
+              <p className="px-2 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">Products</p>
+              {productLinks.map((item) => (
+                <Link key={item.href} to={item.href} className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-slate-900 border-b border-slate-100 text-sm">
+                  <span className="h-1 w-1 rounded-full bg-brand-400 shrink-0" />
+                  {item.label}
                 </Link>
               ))}
               <p className="px-2 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">About</p>
