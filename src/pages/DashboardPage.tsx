@@ -1,46 +1,19 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, BarChart3, CalendarDays, CheckCircle2, FileText, FolderOpen, LogOut, Mail, PlayCircle, ShieldAlert, UsersRound } from 'lucide-react'
+import { ArrowUpRight, FolderOpen, LogOut, PlayCircle } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import BinaryFloat from '../components/BinaryFloat'
 import { getApplicationSubmissions, subscribeToApplicationSubmissions } from '../data/applicationSubmissions'
 import { clearAuthentication } from './LoginPage'
-
-const metrics = (applicationCount: number) => [
-  { label: 'Revenue growth', value: '18.4%', note: 'Quarter over quarter', trend: '+3.2%' },
-  { label: 'Active programs', value: '42', note: 'Across priority sectors', trend: '+6' },
-  { label: 'Delivery health', value: '94%', note: 'On-track milestones', trend: '+4%' },
-  { label: 'Applications', value: String(applicationCount), note: 'Career submissions', trend: applicationCount > 0 ? 'New' : 'None' },
-]
 
 const agenda = [
   'DigiGate Education Platform -\nEducational Institutions',
   'DigiGate Education Platform -\nOpen Platform [ Students & Teachers ]',
 ]
 
-const programs = [
-  { name: 'Enterprise AI Platform', owner: 'Technology Committee', status: 'On track', progress: 82 },
-  { name: 'Governance Automation', owner: 'Risk Committee', status: 'Review', progress: 64 },
-  { name: 'Executive Intelligence Hub', owner: 'Strategy Committee', status: 'On track', progress: 76 },
-]
-
-const todayMeetingDate = new Intl.DateTimeFormat('en-US', {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-}).format(new Date())
-
-const formatSubmittedAt = (submittedAt: string) =>
-  new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(new Date(submittedAt))
-
 export default function DashboardPage() {
   const navigate = useNavigate()
-  const [applications, setApplications] = useState(() => getApplicationSubmissions())
-  const dashboardMetrics = useMemo(() => metrics(applications.length), [applications.length])
+  const [, setApplications] = useState(() => getApplicationSubmissions())
 
   useEffect(() => subscribeToApplicationSubmissions(() => setApplications(getApplicationSubmissions())), [])
 

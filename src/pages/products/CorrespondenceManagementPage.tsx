@@ -17,9 +17,9 @@ function ProcessSection({
   icon: React.ElementType
   title: string
   description?: string
-  steps: { label: string; icon: React.ElementType; anim: Record<string, unknown>; transition: Record<string, unknown> }[]
+  steps: { label: string; icon: React.ElementType; anim: any; transition: any }[]
   glow: string
-  iconAnim: Record<string, unknown>
+  iconAnim: any
 }) {
   return (
     <motion.div
