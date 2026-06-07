@@ -4,6 +4,7 @@ import {
   MonitorSpeaker, Warehouse, Mail, Package, BrainCircuit,
   RefreshCcw, CheckCircle2, Zap, Network, Layers, Settings,
 } from 'lucide-react'
+import BinaryFloat from '../../components/BinaryFloat'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -117,7 +118,7 @@ function IntegrationHubDiagram() {
           {/* Central content */}
           <div className="flex flex-col items-center">
             <motion.img
-              src="/DigiGate-R-HD.png"
+              src="/DigiGate-R-Frame-removebg.png"
               alt="DigiGate"
               animate={{ rotate: 360 }}
               transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
@@ -199,6 +200,7 @@ export default function IntegrationEnablerModulePage() {
           <div className="absolute inset-0 grid-bg opacity-20" />
           <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-brand-600/10 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-accent-600/10 blur-3xl" />
+        <BinaryFloat />
         </div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div initial="hidden" animate="show" variants={fadeUp} className="max-w-4xl">

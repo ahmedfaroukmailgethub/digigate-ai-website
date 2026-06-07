@@ -1,5 +1,97 @@
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
+
+/* ── Orbiting "01" binary codes wrapping the AI Core card ── */
+function BinaryOrbit() {
+  // Two concentric rings of binary glyphs orbiting in opposite directions
+  const inner = useMemo(
+    () => Array.from({ length: 16 }, (_, i) => ({
+      ch: i % 2 === 0 ? '0' : '1',
+      angle: (i / 16) * 360,
+      r: 150,
+      color: i % 3 === 0 ? 'text-brand-300' : i % 3 === 1 ? 'text-accent-300' : 'text-emerald-300',
+    })),
+    [],
+  )
+  const outer = useMemo(
+    () => Array.from({ length: 22 }, (_, i) => ({
+      ch: i % 2 === 0 ? '1' : '0',
+      angle: (i / 22) * 360,
+      r: 200,
+      color: i % 4 === 0 ? 'text-cyan-300' : i % 4 === 1 ? 'text-purple-300' : i % 4 === 2 ? 'text-amber-300' : 'text-brand-300',
+    })),
+    [],
+  )
+
+  return (
+    <>
+      {/* Inner ring — clockwise */}
+      <motion.div
+        className="pointer-events-none absolute left-1/2 top-1/2 z-0"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+      >
+        {inner.map((b, i) => (
+          <motion.span
+            key={`in-${i}`}
+            className={`absolute font-mono text-[13px] font-bold ${b.color}`}
+            style={{
+              transform: `rotate(${b.angle}deg) translate(${b.r}px) rotate(-${b.angle}deg)`,
+              left: 0, top: 0,
+            }}
+            animate={{ opacity: [0.25, 0.95, 0.25] }}
+            transition={{ duration: 2 + (i % 4) * 0.4, repeat: Infinity, delay: i * 0.07 }}
+          >
+            {b.ch}
+          </motion.span>
+        ))}
+      </motion.div>
+
+      {/* Outer ring — counter-clockwise */}
+      <motion.div
+        className="pointer-events-none absolute left-1/2 top-1/2 z-0"
+        animate={{ rotate: -360 }}
+        transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+      >
+        {outer.map((b, i) => (
+          <motion.span
+            key={`out-${i}`}
+            className={`absolute font-mono text-[12px] font-semibold ${b.color}`}
+            style={{
+              transform: `rotate(${b.angle}deg) translate(${b.r}px) rotate(-${b.angle}deg)`,
+              left: 0, top: 0,
+            }}
+            animate={{ opacity: [0.15, 0.7, 0.15] }}
+            transition={{ duration: 2.4 + (i % 5) * 0.35, repeat: Infinity, delay: i * 0.06 }}
+          >
+            {b.ch}
+          </motion.span>
+        ))}
+      </motion.div>
+
+      {/* Static scattered glyphs for depth */}
+      <div className="pointer-events-none absolute inset-[-180px] z-0">
+        {Array.from({ length: 24 }).map((_, i) => {
+          const a = (i / 24) * Math.PI * 2
+          const r = 230 + (i % 3) * 18
+          const x = Math.cos(a) * r
+          const y = Math.sin(a) * r
+          return (
+            <motion.span
+              key={`s-${i}`}
+              className="absolute font-mono text-[11px] font-bold text-white/40"
+              style={{ left: '50%', top: '50%', transform: `translate(${x}px, ${y}px)` }}
+              animate={{ opacity: [0.1, 0.6, 0.1], scale: [0.9, 1.1, 0.9] }}
+              transition={{ duration: 3 + (i % 4) * 0.5, repeat: Infinity, delay: i * 0.12 }}
+            >
+              {i % 2 === 0 ? '0' : '1'}
+            </motion.span>
+          )
+        })}
+      </div>
+    </>
+  )
+}
 import {
   Database,
   Globe,
@@ -114,7 +206,7 @@ export default function AIWorkflow() {
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section id="ai-workflow" className="py-24 lg:py-32 relative overflow-hidden">
+    <section id="ai-workflow" className="py-8 lg:py-10 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-brand-500/6 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-500/30 to-transparent" />
@@ -137,7 +229,7 @@ export default function AIWorkflow() {
             How our <span className="text-gradient">AI engine</span> works
           </h2>
           <p className="mt-5 text-lg text-slate-400">
-            From raw data to decisive action — Digigate's AI orchestration layer
+            From raw data to decisive action — DigiGate's AI orchestration layer
             ingests, reasons, and acts in real time across any data source.
           </p>
         </motion.div>
@@ -188,7 +280,7 @@ export default function AIWorkflow() {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
               transition={{ duration: 0.7, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-56"
+              className="relative w-56 mx-auto"
             >
               {/* Outer glow ring */}
               <motion.div
@@ -203,6 +295,10 @@ export default function AIWorkflow() {
                 transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
               />
 
+              {/* Surrounding orbiting 01 binary codes */}
+              <BinaryOrbit />
+
+
               <div className="relative rounded-3xl border border-white/15 bg-gradient-to-br from-[#0f1230] to-[#0a0a1a] p-6 text-center shadow-2xl shadow-brand-900/40">
                 {/* Pulsing brain icon */}
                 <div className="relative mx-auto w-16 h-16 mb-5">
@@ -216,7 +312,7 @@ export default function AIWorkflow() {
                   </div>
                 </div>
 
-                <div className="font-display text-lg font-bold text-white">Digigate AI Core</div>
+                <div className="font-display text-lg font-bold text-white">DigiGate AI Core</div>
                 <div className="text-xs text-slate-400 mt-1">Orchestration Engine</div>
 
                 {/* Pipeline steps */}

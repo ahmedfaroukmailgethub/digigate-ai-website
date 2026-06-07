@@ -8,7 +8,7 @@ const features = [
     desc: 'Digital strategy, target operating model, and roadmaps grounded in business outcomes.',
     colSpan: 'md:col-span-2 lg:col-span-2',
     color: 'from-blue-500/20 to-cyan-500/20',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=75',
+    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=75',
     imageAlt: 'Consulting team planning a digital transformation roadmap around a table',
   },
   {
@@ -60,7 +60,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="services" className="py-24 lg:py-32 relative overflow-hidden">
+    <section id="services" className="py-8 lg:py-10 relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-500/5 rounded-full blur-[120px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
@@ -78,7 +78,7 @@ export default function Features() {
             One partner. <br/><span className="text-gradient">Every service.</span>
           </h2>
           <p className="mt-6 text-lg text-slate-400">
-            Digigate is your single accountable partner across the entire technology value chain — from strategy to live operations.
+            DigiGate is your single accountable partner across the entire technology value chain — from strategy to live operations.
           </p>
         </motion.div>
 

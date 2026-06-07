@@ -72,23 +72,19 @@ export default function Navbar() {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="fixed top-0 inset-x-0 z-50 bg-white border-b border-slate-200 shadow-sm"
+      className="fixed top-0 inset-x-0 z-50 bg-[#05060f]/95 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/30"
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center self-stretch pr-3 border-r border-slate-200/60">
-            <img src="/softtech-logo.png" alt="SoftTech London Logo" className="h-[53px] w-auto object-contain" />
-          </div>
-          <div className="hidden md:flex items-center pr-3 border-r border-slate-200">
-            <img src="/wbn-logo-hd.jpg" alt="WBN Logo" className="h-14 w-auto object-contain" />
-          </div>
-          <Logo />
+          <Link to="/" className="inline-flex items-center">
+            <img src="/DigiGate_AI_Logo-removebg-preview.png" alt="DigiGate AI" className="h-12 w-auto object-contain" />
+          </Link>
         </div>
 
         <div className="hidden md:flex items-center gap-1">
           <a
             href={primaryLink.href}
-            className="relative px-4 py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors group"
+            className="relative px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors group"
           >
             {primaryLink.label}
             <span className="absolute inset-x-4 bottom-1 h-px bg-gradient-to-r from-brand-400 to-accent-400 scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
@@ -104,7 +100,7 @@ export default function Navbar() {
               to="/about"
               className={({ isActive }) =>
                 `inline-flex items-center gap-1 px-4 py-2 text-sm transition-colors ${
-                  isActive ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
+                  isActive ? "text-white font-medium" : 'text-slate-300 hover:text-white'
                 }`
               }
             >
@@ -146,7 +142,7 @@ export default function Navbar() {
               to="/products"
               className={({ isActive }) =>
                 `inline-flex items-center gap-1 px-4 py-2 text-sm transition-colors ${
-                  isActive ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
+                  isActive ? "text-white font-medium" : 'text-slate-300 hover:text-white'
                 }`
               }
             >
@@ -163,7 +159,7 @@ export default function Navbar() {
                   className="absolute top-full left-0 pt-3 w-[540px]"
                 >
                   <div className="rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-white/10 p-3 shadow-2xl shadow-black/60">
-                    <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-brand-400">DigiGate Products</p>
+                    <p className="px-3 pb-2 text-sm font-bold uppercase tracking-widest text-brand-400">DigiGate Products</p>
                     <div className="grid grid-cols-2 gap-0.5">
                       {productLinks.map((item) => (
                         <Link
@@ -185,7 +181,7 @@ export default function Navbar() {
           {/* Services link */}
           <a
             href="/services"
-            className="relative px-4 py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors group"
+            className="relative px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors group"
           >
             Services
             <span className="absolute inset-x-4 bottom-1 h-px bg-gradient-to-r from-brand-400 to-accent-400 scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
@@ -201,7 +197,7 @@ export default function Navbar() {
               to="/sectors"
               className={({ isActive }) =>
                 `inline-flex items-center gap-1 px-4 py-2 text-sm transition-colors ${
-                  isActive ? 'text-slate-900 font-medium' : 'text-slate-600 hover:text-slate-900'
+                  isActive ? "text-white font-medium" : 'text-slate-300 hover:text-white'
                 }`
               }
             >
@@ -248,7 +244,7 @@ export default function Navbar() {
           {/* Careers link */}
           <a
             href="/careers"
-            className="relative px-4 py-2 text-sm text-slate-600 hover:text-slate-900 transition-colors group"
+            className="relative px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors group"
           >
             Careers
             <span className="absolute inset-x-4 bottom-1 h-px bg-gradient-to-r from-brand-400 to-accent-400 scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
@@ -266,7 +262,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="md:hidden p-2 text-slate-600 hover:text-slate-900"
+          className="md:hidden p-2 text-slate-300 hover:text-white"
           onClick={() => setOpen((s) => !s)}
           aria-label="Toggle menu"
         >
@@ -284,17 +280,17 @@ export default function Navbar() {
             className="md:hidden overflow-hidden border-t border-slate-200 bg-white"
           >
             <div className="px-6 py-4 flex flex-col gap-1">
-              <a href={primaryLink.href} className="px-2 py-3 text-slate-600 hover:text-slate-900 border-b border-slate-100">
+              <a href={primaryLink.href} className="px-2 py-3 text-slate-300 hover:text-white border-b border-slate-100">
                 {primaryLink.label}
               </a>
-              <Link to="/sectors" className="px-2 py-3 text-slate-600 hover:text-slate-900 border-b border-slate-100">
+              <Link to="/sectors" className="px-2 py-3 text-slate-300 hover:text-white border-b border-slate-100">
                 All sectors
               </Link>
               {sectors.map((s) => (
                 <Link
                   key={s.slug}
                   to={`/sectors/${s.slug}`}
-                  className="flex items-center gap-3 px-2 py-3 text-slate-600 hover:text-slate-900 border-b border-slate-100"
+                  className="flex items-center gap-3 px-2 py-3 text-slate-300 hover:text-white border-b border-slate-100"
                 >
                   <SectorIcon iconKey={s.iconKey} className="w-4 h-4 text-brand-300" />
                   <span>{s.name}</span>
@@ -302,19 +298,19 @@ export default function Navbar() {
               ))}
               <p className="px-2 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">Products</p>
               {productLinks.map((item) => (
-                <Link key={item.href} to={item.href} className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-slate-900 border-b border-slate-100 text-sm">
+                <Link key={item.href} to={item.href} className="flex items-center gap-2 px-4 py-2 text-slate-300 hover:text-white border-b border-slate-100 text-sm">
                   <span className="h-1 w-1 rounded-full bg-brand-400 shrink-0" />
                   {item.label}
                 </Link>
               ))}
               <p className="px-2 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">About</p>
               {aboutLinks.map((item) => (
-                <Link key={item.href} to={item.href} className="px-4 py-2.5 text-slate-600 hover:text-slate-900 border-b border-slate-100 block">
+                <Link key={item.href} to={item.href} className="px-4 py-2.5 text-slate-300 hover:text-white border-b border-slate-100 block">
                   {item.label}
                 </Link>
               ))}
               {secondaryLinks.map((l) => (
-                <a key={l.href} href={l.href} className="px-2 py-3 text-slate-600 hover:text-slate-900 border-b border-slate-100">
+                <a key={l.href} href={l.href} className="px-2 py-3 text-slate-300 hover:text-white border-b border-slate-100">
                   {l.label}
                 </a>
               ))}

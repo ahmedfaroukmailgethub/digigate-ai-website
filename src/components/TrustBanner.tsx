@@ -15,13 +15,13 @@ export default function TrustBanner() {
           <div key={i} className="flex gap-12 items-center">
             <span>Enterprise Grade</span>
             <span className="w-1.5 h-1.5 rounded-full bg-brand-500" />
-            <span>SOC 2 Type II Certified</span>
+            <span>Certified Engineers</span>
             <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
             <span>99.99% Guaranteed SLA</span>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
             <span>Global Delivery Network</span>
             <span className="w-1.5 h-1.5 rounded-full bg-brand-500" />
-            <span>Zero-Trust Architecture</span>
+            <span>100%-Trust Architecture</span>
             <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
           </div>
         ))}

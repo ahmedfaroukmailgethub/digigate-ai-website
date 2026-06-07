@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { CheckCircle2, FileText, Sparkles } from 'lucide-react'
+import BinaryFloat from '../../components/BinaryFloat'
 
 /* ── Animated DMS Diagram ── */
 function DMSDiagram() {
@@ -226,6 +227,7 @@ export default function DocumentsManagementPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#05060f] via-[#05060f]/95 to-[#05060f]/80" />
           <div className="absolute inset-0 grid-bg opacity-20" />
           <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-brand-600/10 blur-3xl" />
+        <BinaryFloat />
         </div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div initial="hidden" animate="show" variants={fadeUp} className="max-w-4xl">

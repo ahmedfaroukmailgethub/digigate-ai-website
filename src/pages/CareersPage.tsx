@@ -239,14 +239,8 @@ export default function CareersPage() {
                 href="#open-roles"
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-brand-100"
               >
-                View open roles
+                Submit Your Application
                 <ArrowRight className="h-4 w-4" />
-              </a>
-              <a
-                href="#apply"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-              >
-                Submit application
               </a>
             </div>
           </motion.div>
@@ -259,9 +253,9 @@ export default function CareersPage() {
           >
             <div className="grid gap-3 rounded-3xl border border-white/10 bg-slate-950/72 p-5 shadow-2xl shadow-black/30 backdrop-blur">
               {[
-                { icon: BriefcaseBusiness, value: String(careers.length), label: 'Open roles' },
-                { icon: Building2, value: String(hiringDepartmentCount), label: 'Departments hiring' },
-                { icon: MapPin, value: String(globalHubCount), label: 'Global hubs' },
+                { icon: BriefcaseBusiness, value: '2', label: 'Open roles' },
+                { icon: Building2, value: '1', label: 'Departments hiring' },
+                { icon: MapPin, value: '1', label: 'Global hubs' },
               ].map((item) => {
                 const Icon = item.icon
 
@@ -280,7 +274,7 @@ export default function CareersPage() {
         </div>
       </section>
 
-      <section id="open-roles" className="py-14 lg:py-20">
+      <section id="open-roles" className="pt-14 pb-2 lg:pt-20 lg:pb-4">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
           <motion.div
             variants={fadeUp}
@@ -298,120 +292,23 @@ export default function CareersPage() {
             </p>
           </motion.div>
 
-          <div className="mt-10 flex flex-wrap gap-3">
-            {locationOptions.map((location) => {
-              const selected = location === selectedLocation
 
-              return (
-                <button
-                  key={location}
-                  type="button"
-                  onClick={() => setSelectedLocation(location)}
-                  className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
-                    selected
-                      ? 'border-brand-300/45 bg-brand-500/[0.14] text-white'
-                      : 'border-white/10 bg-white/[0.035] text-slate-300 hover:border-white/20 hover:bg-white/[0.06]'
-                  }`}
-                  aria-pressed={selected}
-                >
-                  <MapPin className="h-4 w-4 text-brand-300" />
-                  {location}
-                </button>
-              )
-            })}
-          </div>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {filteredCareers.map((career, index) => {
-              const selected = career.id === selectedCareer.id
-
-              return (
-                <motion.article
-                  key={career.id}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-80px' }}
-                  transition={{ duration: 0.5, delay: index * 0.035 }}
-                  className={`flex min-h-[292px] flex-col rounded-3xl border p-5 shadow-xl shadow-black/10 transition ${
-                    selected ? 'border-brand-300/45 bg-brand-500/[0.09]' : 'border-white/10 bg-white/[0.035] hover:border-white/20 hover:bg-white/[0.055]'
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-accent-500 text-white shadow-lg shadow-brand-500/25">
-                      <BriefcaseBusiness className="h-5 w-5" />
-                    </span>
-                    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-300">
-                      {career.location}
-                    </span>
-                  </div>
-                  <div className="mt-5 flex-1">
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-300">{career.department}</p>
-                    <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-white">{career.title}</h3>
-                    <p className="mt-3 text-sm font-semibold leading-6 text-emerald-200">{career.salary}</p>
-                    <p className="mt-4 line-clamp-4 text-sm leading-6 text-slate-400">{career.description}</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleApply(career.id)}
-                    className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-                  >
-                    View and apply
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </motion.article>
-              )
-            })}
-          </div>
         </div>
       </section>
 
-      <section id="apply" className="py-12 lg:py-20">
-        <div className="mx-auto grid w-full max-w-7xl gap-8 px-6 lg:grid-cols-12 lg:px-8">
-          <motion.div
-            key={selectedCareer.id}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-            className="lg:col-span-5"
-          >
-            <div className="sticky top-24 rounded-3xl border border-white/10 bg-white/[0.035] p-6 shadow-xl shadow-black/10">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-300">Selected career</p>
-              <h2 className="mt-4 font-display text-3xl font-bold leading-tight text-white md:text-4xl">{selectedCareer.title}</h2>
-              <p className="mt-4 text-sm font-semibold leading-6 text-emerald-200">{selectedCareer.salary}</p>
-              <div className="mt-5 grid gap-3 text-sm text-slate-300">
-                <span className="inline-flex items-center gap-3">
-                  <Users className="h-4 w-4 text-brand-300" />
-                  {selectedCareer.department}
-                </span>
-                <span className="inline-flex items-center gap-3">
-                  <MapPin className="h-4 w-4 text-brand-300" />
-                  {selectedCareer.location}
-                </span>
-              </div>
-              <p className="mt-6 text-sm leading-7 text-slate-400">{selectedCareer.description}</p>
-              <div className="mt-6 grid gap-3">
-                {selectedCareer.highlights.map((highlight) => (
-                  <span key={highlight} className="inline-flex items-start gap-3 text-sm leading-6 text-slate-300">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
-                    {highlight}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
+      <section id="apply" className="pt-2 pb-12 lg:pt-4 lg:pb-20">
+        <div className="mx-auto w-full max-w-4xl px-6 lg:px-8">
           <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-100px' }}
-            className="lg:col-span-7"
           >
             <form onSubmit={handleSubmit} className="rounded-3xl border border-white/10 bg-slate-950/60 p-6 shadow-2xl shadow-black/20 backdrop-blur md:p-8">
               <div className="flex flex-col gap-5 border-b border-white/10 pb-6 md:flex-row md:items-start md:justify-between">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-300">Application form</p>
-                  <h2 className="mt-3 font-display text-3xl font-bold text-white">Apply for {selectedCareer.title}</h2>
+                  <h2 className="mt-3 font-display text-3xl font-bold text-white">Apply for a Career with DigiGate Group</h2>
                 </div>
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300">
                   <FileText className="h-3.5 w-3.5 text-brand-300" />

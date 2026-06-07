@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Eye, EyeOff, LockKeyhole, LogIn, ShieldCheck, UserRound } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import BinaryFloat from '../components/BinaryFloat'
 
 const VALID_USERNAME = 'Admin'
 const VALID_PASSWORD = 'Wbncorp'
@@ -58,6 +59,7 @@ export default function LoginPage() {
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-[#05060f] via-[#071027] to-[#05060f]" />
         <div className="absolute inset-0 grid-bg opacity-25" />
+        <BinaryFloat />
       </div>
 
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:px-8">

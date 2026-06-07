@@ -14,12 +14,10 @@ export default function HomePage() {
     <>
       <Hero />
       <TrustBanner />
-      <LogoCloud />
       <Approach />
       <Features />
       <AIWorkflow />
-      <Solutions />
-      <Stats />
+      <LogoCloud />
       <Testimonials />
       <CTA />
     </>

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles, Mic, Filter, Cpu, Network, CheckCircle2, MessageSquare, FileText, Languages, Brain, Waves, Volume2 } from 'lucide-react'
+import BinaryFloat from '../../components/BinaryFloat'
 
 export default function VoiceRecognitionEnginePage() {
   useEffect(() => {
@@ -14,6 +15,7 @@ export default function VoiceRecognitionEnginePage() {
         <div className="absolute -top-32 -left-32 w-[640px] h-[640px] rounded-full bg-brand-500/10 blur-3xl" />
         <div className="absolute top-1/3 -right-40 w-[520px] h-[520px] rounded-full bg-amber-500/10 blur-3xl" />
         <div className="absolute bottom-0 left-1/2 w-[640px] h-[640px] rounded-full bg-accent-500/10 blur-3xl" />
+        <BinaryFloat />
       </div>
 
       <section className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-28 pb-16">

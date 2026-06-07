@@ -8,6 +8,7 @@ import SectorsIndexPage from './pages/SectorsIndexPage'
 import SectorPage from './pages/SectorPage'
 import ServicesPage from './pages/ServicesPage'
 import AboutPage from './pages/AboutPage'
+import ProductsIndexPage from './pages/ProductsIndexPage'
 import AboutIntroPage from './pages/AboutIntroPage'
 import AboutValuesPage from './pages/AboutValuesPage'
 import AboutPhilosophyPage from './pages/AboutPhilosophyPage'
@@ -63,6 +64,7 @@ export default function App() {
             <Route path="/about/philosophy" element={<AboutPhilosophyPage />} />
             <Route path="/about/vision" element={<AboutVisionPage />} />
             <Route path="/about/mission" element={<AboutMissionPage />} />
+            <Route path="/products" element={<ProductsIndexPage />} />
             <Route path="/products/documents-management-system" element={<DocumentsManagementPage />} />
             <Route path="/products/correspondence-management-system" element={<CorrespondenceManagementPage />} />
             <Route path="/products/records-management-system" element={<RecordsManagementPage />} />

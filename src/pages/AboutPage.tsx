@@ -1,6 +1,186 @@
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Building2, MapPin, ShieldCheck, Sparkles, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
+
+/* ─── Hero: Rotating globe with floating binary 01 codes ─── */
+function GlobeBinaryBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    let rotation = 0
+
+    // Simple world-map landmass blobs (lat/lon in radians, radius)
+    // Approximate continents as collections of points
+    const continents: { lat: number; lon: number; r: number }[] = []
+    function addBlob(latC: number, lonC: number, sx: number, sy: number, dense: number) {
+      for (let i = 0; i < dense; i++) {
+        const a = Math.random() * Math.PI * 2
+        const d = Math.sqrt(Math.random())
+        continents.push({
+          lat: latC + Math.sin(a) * d * sy,
+          lon: lonC + Math.cos(a) * d * sx,
+          r: 0.7 + Math.random() * 0.6,
+        })
+      }
+    }
+    // Africa
+    addBlob(0.1, 0.35, 0.35, 0.6, 90)
+    // Europe
+    addBlob(0.9, 0.2, 0.35, 0.2, 50)
+    // Asia
+    addBlob(0.7, 1.5, 0.7, 0.45, 140)
+    // North America
+    addBlob(0.85, -1.6, 0.55, 0.45, 90)
+    // South America
+    addBlob(-0.4, -1.1, 0.25, 0.55, 60)
+    // Australia
+    addBlob(-0.45, 2.3, 0.3, 0.2, 40)
+
+    // Floating binary "01" particles around the globe
+    interface Bin {
+      angle: number; orbit: number; speed: number
+      ch: string; size: number; color: string; alpha: number
+      drift: number
+    }
+    const COLORS = ['#5b8aff', '#22d3ee', '#a855f7', '#34d399', '#f59e0b']
+    const bins: Bin[] = Array.from({ length: 90 }, () => ({
+      angle: Math.random() * Math.PI * 2,
+      orbit: 0.55 + Math.random() * 0.85,        // multiplier of globe R
+      speed: (0.0006 + Math.random() * 0.0014) * (Math.random() > 0.5 ? 1 : -1),
+      ch: Math.random() > 0.5 ? '0' : '1',
+      size: 10 + Math.random() * 6,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: 0.45 + Math.random() * 0.45,
+      drift: Math.random() * Math.PI * 2,
+    }))
+
+    // Inner binary particles that sit on the surface
+    interface Surf { lat: number; lon: number; ch: string; color: string }
+    const surfBins: Surf[] = Array.from({ length: 28 }, () => ({
+      lat: (Math.random() - 0.5) * Math.PI * 0.9,
+      lon: Math.random() * Math.PI * 2,
+      ch: Math.random() > 0.5 ? '0' : '1',
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    }))
+
+    function project(lat: number, lon: number, R: number, cx: number, cy: number) {
+      const x = R * Math.cos(lat) * Math.sin(lon + rotation)
+      const y = R * Math.sin(lat)
+      const z = R * Math.cos(lat) * Math.cos(lon + rotation)
+      return { sx: cx + x, sy: cy - y * 0.92, z }
+    }
+
+    function draw() {
+      const W = canvas!.width, H = canvas!.height
+      const cx = W * 0.66, cy = H / 2
+      const R = Math.min(W, H) * 0.34
+      ctx!.clearRect(0, 0, W, H)
+
+      // Deep gradient backdrop
+      const bg = ctx!.createRadialGradient(cx, cy, 0, cx, cy, W * 0.9)
+      bg.addColorStop(0, 'rgba(10,16,40,1)')
+      bg.addColorStop(0.6, 'rgba(5,8,22,1)')
+      bg.addColorStop(1, 'rgba(2,3,10,1)')
+      ctx!.fillStyle = bg
+      ctx!.fillRect(0, 0, W, H)
+
+      // Globe glow
+      const glow = ctx!.createRadialGradient(cx, cy, R * 0.6, cx, cy, R * 2.0)
+      glow.addColorStop(0, 'rgba(91,138,255,0.18)')
+      glow.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx!.fillStyle = glow
+      ctx!.beginPath(); ctx!.arc(cx, cy, R * 2.0, 0, Math.PI * 2); ctx!.fill()
+
+      // Sphere fill
+      const sphere = ctx!.createRadialGradient(cx - R * 0.35, cy - R * 0.35, R * 0.1, cx, cy, R)
+      sphere.addColorStop(0, 'rgba(46,84,180,0.28)')
+      sphere.addColorStop(0.7, 'rgba(18,28,72,0.22)')
+      sphere.addColorStop(1, 'rgba(6,10,30,0.05)')
+      ctx!.fillStyle = sphere
+      ctx!.beginPath(); ctx!.arc(cx, cy, R, 0, Math.PI * 2); ctx!.fill()
+
+      // Outer rim
+      ctx!.beginPath(); ctx!.arc(cx, cy, R, 0, Math.PI * 2)
+      ctx!.strokeStyle = 'rgba(91,138,255,0.55)'; ctx!.lineWidth = 1.3; ctx!.stroke()
+
+      // Latitudes
+      for (let lat = -75; lat <= 75; lat += 15) {
+        const lr = (lat * Math.PI) / 180
+        const yr = cy - R * Math.sin(lr) * 0.92
+        ctx!.beginPath()
+        ctx!.ellipse(cx, yr, R * Math.cos(lr), R * Math.cos(lr) * 0.18, 0, 0, Math.PI * 2)
+        ctx!.strokeStyle = `rgba(91,138,255,${lat === 0 ? 0.4 : 0.18})`
+        ctx!.lineWidth = lat === 0 ? 0.9 : 0.5; ctx!.stroke()
+      }
+      // Meridians
+      for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI + rotation
+        const sw = Math.abs(Math.cos(angle))
+        ctx!.beginPath()
+        ctx!.ellipse(cx + R * 0.02 * Math.sin(angle), cy, R * sw, R * 0.92, 0, 0, Math.PI * 2)
+        ctx!.strokeStyle = `rgba(168,85,247,${0.10 + 0.18 * sw})`
+        ctx!.lineWidth = 0.5; ctx!.stroke()
+      }
+
+      // Continent dots (world map)
+      for (const c of continents) {
+        const p = project(c.lat, c.lon, R, cx, cy)
+        if (p.z < 0) continue
+        const depth = (p.z + R) / (2 * R)
+        ctx!.beginPath()
+        ctx!.arc(p.sx, p.sy, c.r * (0.6 + 0.6 * depth), 0, Math.PI * 2)
+        ctx!.fillStyle = `rgba(94,234,212,${0.25 + 0.55 * depth})`
+        ctx!.fill()
+      }
+
+      // Binary 01 characters on the surface
+      ctx!.font = 'bold 11px "Courier New", monospace'
+      for (const s of surfBins) {
+        const p = project(s.lat, s.lon, R, cx, cy)
+        if (p.z < 0) continue
+        const depth = (p.z + R) / (2 * R)
+        ctx!.fillStyle = s.color + Math.round(0.85 * depth * 255).toString(16).padStart(2, '0')
+        ctx!.fillText(s.ch, p.sx - 3, p.sy + 4)
+      }
+
+      // Floating binary 01 codes orbiting outside the globe
+      ctx!.font = '12px "Courier New", monospace'
+      for (const b of bins) {
+        b.angle += b.speed
+        b.drift += 0.005
+        const r = R * b.orbit + Math.sin(b.drift) * 6
+        const x = cx + Math.cos(b.angle) * r
+        const y = cy + Math.sin(b.angle) * r * 0.85
+        ctx!.fillStyle = b.color + Math.round(b.alpha * 255).toString(16).padStart(2, '0')
+        ctx!.font = `${b.size}px "Courier New", monospace`
+        ctx!.fillText(b.ch, x, y)
+        // occasional flip
+        if (Math.random() < 0.002) b.ch = b.ch === '0' ? '1' : '0'
+      }
+
+      rotation += 0.0018
+      animId = requestAnimationFrame(draw)
+    }
+    draw()
+    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
+  }, [])
+
+  return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+}
 
 const offices = [
   {
@@ -111,15 +291,10 @@ export default function AboutPage() {
     <>
       <section className="relative overflow-hidden pt-32 pb-20 lg:pt-44 lg:pb-28">
         <div className="absolute inset-0 -z-10">
-          <img
-            src={offices[0].image}
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 h-full w-full object-cover opacity-24"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#05060f] via-[#05060f]/92 to-[#05060f]/72" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#05060f]/20 to-[#05060f]" />
-          <div className="absolute inset-0 grid-bg opacity-20" />
+          <GlobeBinaryBackground />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#05060f] via-[#05060f]/85 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#05060f]/10 to-[#05060f]" />
+          <div className="absolute inset-0 grid-bg opacity-10" />
         </div>
 
         <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 lg:grid-cols-12 lg:items-end lg:px-8">
@@ -135,19 +310,41 @@ export default function AboutPage() {
               DigiGate AI is an enterprise technology company on a singular mission: to make organisations in the world's most demanding sectors — government, education, aviation, and finance — dramatically more intelligent, efficient, and capable through the disciplined application of artificial intelligence.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                to="/services"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-brand-100"
+              <motion.div
+                animate={{ boxShadow: [
+                  '0 0 0 0 rgba(91,138,255,0.55)',
+                  '0 0 32px 6px rgba(91,138,255,0.55)',
+                  '0 0 0 0 rgba(91,138,255,0.55)',
+                ] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                className="rounded-xl"
               >
-                Explore our services
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <a
-                href="#offices"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+                <Link
+                  to="/services"
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-500 via-accent-500 to-brand-500 bg-[length:200%_100%] px-5 py-3 text-sm font-semibold text-white transition-[background-position] duration-700 hover:bg-[position:100%_0]"
+                >
+                  Explore our services
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
+
+              <motion.div
+                animate={{ boxShadow: [
+                  '0 0 0 0 rgba(251,191,36,0.55)',
+                  '0 0 32px 6px rgba(251,191,36,0.55)',
+                  '0 0 0 0 rgba(251,191,36,0.55)',
+                ] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+                className="rounded-xl"
               >
-                View offices
-              </a>
+                <Link
+                  to="/products"
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 bg-[length:200%_100%] px-5 py-3 text-sm font-semibold text-slate-950 transition-[background-position] duration-700 hover:bg-[position:100%_0]"
+                >
+                  Explore DigiGate Products
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
 
@@ -169,7 +366,64 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-14 lg:py-20">
+      {/* White intro card */}
+      <section className="relative -mt-10 pb-10 lg:-mt-16 lg:pb-14">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#101a3a] via-[#0e1730] to-[#0b1428] text-slate-100 shadow-2xl shadow-black/50 ring-1 ring-brand-500/20"
+          >
+            <div className="grid gap-10 p-8 md:grid-cols-12 md:p-12 lg:p-16">
+              <div className="md:col-span-5">
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-300">DigiGate Group At a Glance</p>
+                <h2 className="mt-4 font-display text-3xl font-bold leading-tight tracking-tight md:text-4xl text-white">
+                  Engineered for the world's most regulated and disciplined AI engineering.
+                </h2>
+                <p className="mt-5 text-base leading-7 text-slate-300">
+                  We combine deep sector expertise with disciplined AI engineering — closing the gap between the promise of
+                  enterprise intelligence and what it actually takes to deploy it in government, education, aviation and finance.
+                </p>
+
+                <div className="mt-8 flex flex-col items-center md:items-start gap-3">
+                  <div className="rounded-2xl bg-[#e3ebf7] p-3 shadow-xl shadow-black/40">
+                    <img
+                      src="/2-GBH-HD-Logo-N-RBG.png"
+                      alt="Global Business Hub"
+                      className="h-[2.734rem] md:h-[3.281rem] w-auto object-contain"
+                    />
+                  </div>
+                  <div className="text-center md:text-left">
+                    <p className="text-sm font-semibold text-white">Global Business Hub Holding.</p>
+                    <p className="mt-1 text-sm text-slate-300">Connecting the Globe for Intelligent Business</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="md:col-span-7 grid grid-cols-2 gap-4 md:gap-5">
+                {[
+                  { src: '/DigiGate_AI_Logo-removebg-preview.png', title: 'DigiGate AI', text: 'Enterprise intelligence platform powering our sector-trained AI engines.' },
+                  { src: '/DigiGate-R-HD.png', title: 'DigiGate ®', text: <><strong className="font-semibold text-slate-900">Digital Transformation Platform</strong> for enterprises across sectors and industries.</> },
+                  { src: '/softtech-logo.png', title: 'SoftTech London', text: 'Empowering Change, Creating the Future — connecting DigiGate to technology worldwide.' },
+                  { src: '/wbn-logo.png', title: 'World Business Network', text: 'Global business network connecting DigiGate to clients and partners worldwide.' },
+                ].map((card) => (
+                  <div key={card.title} className="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-brand-300 hover:shadow-lg">
+                    <div className="flex h-20 items-center justify-center">
+                      <img src={card.src} alt={card.title} className="max-h-full max-w-full object-contain" />
+                    </div>
+                    <h3 className="mt-3 font-display text-base font-semibold text-slate-900">{card.title}</h3>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">{card.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-4 lg:py-6">
         <div className="mx-auto grid w-full max-w-7xl gap-8 px-6 lg:grid-cols-12 lg:px-8">
           <motion.div
             variants={fadeUp}
@@ -207,7 +461,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-12 lg:py-16">
+      <section className="py-4 lg:py-6">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
           <div className="grid gap-5 md:grid-cols-3">
             {principles.map((principle, index) => {
@@ -293,7 +547,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="offices" className="py-14 lg:py-20">
+      <section id="offices" className="py-4 lg:py-6">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
           <motion.div
             variants={fadeUp}

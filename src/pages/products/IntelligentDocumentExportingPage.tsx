@@ -6,6 +6,7 @@ import {
   CheckCircle2, ArrowRight, GitMerge, TrendingUp,
   Cloud, FolderTree,
 } from 'lucide-react'
+import BinaryFloat from '../../components/BinaryFloat'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -269,6 +270,7 @@ export default function IntelligentDocumentExportingPage() {
           <div className="absolute inset-0 grid-bg opacity-20" />
           <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-amber-600/10 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-brand-600/10 blur-3xl" />
+        <BinaryFloat />
         </div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div initial="hidden" animate="show" variants={fadeUp} className="max-w-4xl">

@@ -305,6 +305,61 @@ const pillars = [
   },
 ]
 
+/* ── Soft floating "01" binary background ── */
+function BinaryFloat() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight }
+    resize()
+    window.addEventListener('resize', resize)
+
+    interface Bit {
+      x: number; y: number; vx: number; vy: number
+      ch: string; size: number; targetAlpha: number
+      phase: number; phaseSpeed: number
+    }
+    const COUNT = 150
+    const bits: Bit[] = Array.from({ length: COUNT }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.14,
+      vy: (Math.random() * 0.16 + 0.04) * (Math.random() > 0.85 ? -1 : 1),
+      ch: Math.random() > 0.5 ? '0' : '1',
+      size: 10 + Math.random() * 7,
+      targetAlpha: 0.14 + Math.random() * 0.32,
+      phase: Math.random() * Math.PI * 2,
+      phaseSpeed: 0.004 + Math.random() * 0.010,
+    }))
+
+    function draw() {
+      const W = canvas!.width, H = canvas!.height
+      ctx!.clearRect(0, 0, W, H)
+      for (const b of bits) {
+        b.x += b.vx; b.y += b.vy; b.phase += b.phaseSpeed
+        if (b.x < -20) b.x = W + 20
+        if (b.x > W + 20) b.x = -20
+        if (b.y < -20) { b.y = H + 20; b.ch = Math.random() > 0.5 ? '0' : '1' }
+        if (b.y > H + 20) { b.y = -20; b.ch = Math.random() > 0.5 ? '0' : '1' }
+        const breath = 0.5 + 0.5 * Math.sin(b.phase)
+        const a = b.targetAlpha * breath
+        if (Math.random() < 0.001) b.ch = b.ch === '0' ? '1' : '0'
+        ctx!.font = `${b.size}px "Courier New", monospace`
+        ctx!.fillStyle = `rgba(180,200,255,${a})`
+        ctx!.fillText(b.ch, b.x, b.y)
+      }
+      animId = requestAnimationFrame(draw)
+    }
+    draw()
+    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
+  }, [])
+  return <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" />
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
@@ -315,7 +370,7 @@ export default function AboutPhilosophyPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-16 lg:pt-44 lg:pb-20">
+      <section className="relative overflow-hidden pt-20 pb-6 lg:pt-24 lg:pb-8">
         <div className="absolute inset-0 -z-10">
           <img
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2000&q=70"
@@ -326,6 +381,7 @@ export default function AboutPhilosophyPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#05060f] via-[#05060f]/92 to-[#05060f]/75" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#05060f]/20 to-[#05060f]" />
           <div className="absolute inset-0 grid-bg opacity-20" />
+          <BinaryFloat />
         </div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div initial="hidden" animate="show" variants={fadeUp} className="max-w-3xl">

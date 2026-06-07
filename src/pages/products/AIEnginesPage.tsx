@@ -4,6 +4,7 @@ import {
   ScanEye, AudioWaveform, BrainCircuit, CheckCircle2,
   Zap, ShieldCheck, Rocket, Code2, Layers, Globe,
 } from 'lucide-react'
+import BinaryFloat from '../../components/BinaryFloat'
 import AIWorkflow from '../../components/AIWorkflow'
 
 const fadeUp = {
@@ -247,6 +248,7 @@ export default function AIEnginesPage() {
           <div className="absolute inset-0 grid-bg opacity-20" />
           <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-brand-600/10 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-accent-600/10 blur-3xl" />
+        <BinaryFloat />
         </div>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div initial="hidden" animate="show" variants={fadeUp} className="max-w-4xl">

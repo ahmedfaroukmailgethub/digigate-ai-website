@@ -193,13 +193,6 @@ export const sectors: Sector[] = [
           'A private UAE university offering business, law, engineering, and IT programs with an emphasis on career readiness, sustainability, and applied research.',
       },
       {
-        name: 'University of Sharjah',
-        url: 'https://www.sharjah.ac.ae',
-        logo: 'https://api.sharjah.ac.ae/-/media/project/uos/sites/uos/others/navigation-logos/brand-logo-black.svg',
-        description:
-          'A comprehensive research university with broad academic programs, strong student life, innovation initiatives, and regional leadership in higher education.',
-      },
-      {
         name: 'IEEE',
         url: 'https://www.ieee.org',
         logo: 'https://upload.wikimedia.org/wikipedia/commons/2/21/IEEE_logo.svg',
@@ -212,6 +205,13 @@ export const sectors: Sector[] = [
         logo: 'https://pythagoras.rnu.tn/wp-content/uploads/2023/04/mainlogoforbanner.png',
         description:
           'A regional Arab university institution delivering education, research, and professional development across science, technology, maritime transport, engineering, and business disciplines.',
+      },
+      {
+        name: 'Education Basket',
+        url: '#',
+        logo: '/education%20basket.png',
+        description:
+          'At Education Basket, a dedicated team to empowering students in their academic and career journey.',
       },
     ],
     outcomes: [
@@ -234,10 +234,10 @@ export const sectors: Sector[] = [
   {
     slug: 'aviation',
     name: 'Aviation',
-    tagline: 'Mission-critical systems for airports, airlines, and authorities',
+    tagline: 'Mission-critical systems for Aviation Sector Related Business',
     hero: 'Turnkey aviation technology — from terminal operations to passenger experience and predictive maintenance.',
     description:
-      'Digigate delivers integrated aviation programs for civil aviation authorities, airport operators, and ground handlers. We combine domain expertise, mission-critical engineering, and AI to keep operations safe, on-time, and profitable.',
+      'DigiGate delivers integrated catering aviation programs for airport catering operator, and related handling operation. We combine domain expertise, mission-critical engineering, and AI to keep operations safe, on-time, and profitable.',
     challenges: [
       'Coordinating dozens of stakeholders across airside and landside',
       'Predicting and preventing operational disruption',
@@ -246,9 +246,9 @@ export const sectors: Sector[] = [
     ],
     solutions: [
       { title: 'Airport Operations Center (APOC)', desc: 'Real-time situational awareness across all stakeholders.' },
-      { title: 'Smart Passenger Journey', desc: 'Biometric flow, self-service, and real-time wayfinding.' },
-      { title: 'Predictive Maintenance', desc: 'AI-driven asset health for runways, BHS, and equipment.' },
-      { title: 'Aviation Cybersecurity', desc: 'OT/IT segmentation, SOC, and ICAO-compliant resilience.' },
+      { title: 'Smart logistic process', desc: 'Biometric flow, self-service, and real-time wayfinding.' },
+      { title: 'Predictive Maintenance', desc: 'AI-driven asset health for Hi Loaders, Machines , and equipment.' },
+      { title: 'Critical systems Cybersecurity', desc: 'OT/IT segmentation, SOC, and ICAO-compliant resilience.' },
     ],
     outcomes: [
       { value: '−28%', label: 'On-time-departure delays' },
@@ -270,10 +270,10 @@ export const sectors: Sector[] = [
   {
     slug: 'finance',
     name: 'Financial Services',
-    tagline: 'Banking, insurance, and capital markets — re-engineered',
+    tagline: 'Financial, insurance, and capital markets — re-engineered',
     hero: 'Turnkey solutions for digital banking, intelligent risk, and AI-powered customer engagement.',
     description:
-      'Digigate partners with banks, insurers, and fintechs to design and deliver end-to-end transformation: digital onboarding, core integrations, AML/fraud, advisor copilots, and contact-center modernization — all on regulated, compliant foundations.',
+      'DigiGate partners with fintechs to design and deliver end-to-end transformation: digital onboarding, core integrations, AML/fraud, advisor copilots, and contact-center modernization — all on regulated, compliant foundations.',
     challenges: [
       'Legacy core systems slowing down product launches',
       'Rising fraud, AML, and regulatory complexity',

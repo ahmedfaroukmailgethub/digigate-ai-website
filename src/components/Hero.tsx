@@ -1,7 +1,78 @@
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Logo from './Logo'
+
+/* ─── Floating binary "01" particle background ─── */
+function BinaryFloatBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let animId: number
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight }
+    resize()
+    window.addEventListener('resize', resize)
+
+    interface Bit {
+      x: number; y: number; vx: number; vy: number
+      ch: string; size: number; alpha: number; targetAlpha: number
+      phase: number; phaseSpeed: number
+    }
+
+    const COUNT = 160
+    const bits: Bit[] = Array.from({ length: COUNT }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() * 0.2 + 0.05) * (Math.random() > 0.85 ? -1 : 1),
+      ch: Math.random() > 0.5 ? '0' : '1',
+      size: 11 + Math.random() * 8,
+      alpha: 0,
+      targetAlpha: 0.18 + Math.random() * 0.35,
+      phase: Math.random() * Math.PI * 2,
+      phaseSpeed: 0.005 + Math.random() * 0.012,
+    }))
+
+    function draw() {
+      const W = canvas!.width, H = canvas!.height
+      ctx!.clearRect(0, 0, W, H)
+      ctx!.font = '13px "Courier New", monospace'
+
+      for (const b of bits) {
+        b.x += b.vx
+        b.y += b.vy
+        b.phase += b.phaseSpeed
+
+        if (b.x < -20) b.x = W + 20
+        if (b.x > W + 20) b.x = -20
+        if (b.y < -20) { b.y = H + 20; b.ch = Math.random() > 0.5 ? '0' : '1' }
+        if (b.y > H + 20) { b.y = -20; b.ch = Math.random() > 0.5 ? '0' : '1' }
+
+        // Soft breathing alpha
+        const breathing = 0.5 + 0.5 * Math.sin(b.phase)
+        b.alpha = b.targetAlpha * breathing
+
+        if (Math.random() < 0.0015) b.ch = b.ch === '0' ? '1' : '0'
+
+        ctx!.font = `${b.size}px "Courier New", monospace`
+        ctx!.fillStyle = `rgba(180,200,255,${b.alpha})`
+        ctx!.fillText(b.ch, b.x, b.y)
+      }
+
+      animId = requestAnimationFrame(draw)
+    }
+    draw()
+    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
+  }, [])
+
+  return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full pointer-events-none" />
+}
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -25,6 +96,7 @@ export default function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#05060f]/80 via-[#05060f]/95 to-[#05060f]" />
         <div className="absolute inset-0 grid-bg opacity-30" />
+        <BinaryFloatBackground />
         <motion.div
           className="absolute top-1/4 -left-32 w-[600px] h-[600px] rounded-full bg-brand-600/10 blur-3xl"
           animate={{ scale: [1, 1.2, 1], x: [0, 40, 0] }}
@@ -68,7 +140,7 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
               </span>
-              Next-Generation Digital Partner
+              Next-Generation AI-Digital Partner
               <Sparkles size={12} className="text-accent-400" />
             </motion.div>
 
@@ -89,7 +161,7 @@ export default function Hero() {
               variants={fadeUp}
               className="mt-6 max-w-xl mx-auto lg:mx-0 text-lg text-slate-400"
             >
-              Digigate doesn't just consult—we build, deploy, and operate high-performance digital ecosystems. We combine deep engineering expertise with AI to solve mission-critical challenges.
+              DigiGate doesn't just consult—we build, deploy, and operate high-performance digital ecosystems. We combine deep engineering expertise with AI to solve mission-critical challenges.
             </motion.p>
 
             <motion.div
@@ -99,13 +171,41 @@ export default function Hero() {
               variants={fadeUp}
               className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
             >
-              <Link
-                to="/sectors"
-                className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-600 to-purple-600 outline outline-1 outline-offset-2 outline-transparent hover:outline-brand-500/50 hover:translate-y-[-2px] transition-all shadow-[0_0_40px_-10px_rgba(53,99,255,0.4)]"
+              <motion.div
+                animate={{ boxShadow: [
+                  '0 0 0 0 rgba(91,138,255,0.55)',
+                  '0 0 32px 6px rgba(91,138,255,0.55)',
+                  '0 0 0 0 rgba(91,138,255,0.55)',
+                ] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                className="rounded-xl"
               >
-                Discover Solutions
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+                <Link
+                  to="/services"
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-500 via-accent-500 to-brand-500 bg-[length:200%_100%] px-5 py-3 text-sm font-semibold text-white transition-[background-position] duration-700 hover:bg-[position:100%_0]"
+                >
+                  Explore our services
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
+
+              <motion.div
+                animate={{ boxShadow: [
+                  '0 0 0 0 rgba(251,191,36,0.55)',
+                  '0 0 32px 6px rgba(251,191,36,0.55)',
+                  '0 0 0 0 rgba(251,191,36,0.55)',
+                ] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+                className="rounded-xl"
+              >
+                <Link
+                  to="/products"
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 bg-[length:200%_100%] px-5 py-3 text-sm font-semibold text-slate-950 transition-[background-position] duration-700 hover:bg-[position:100%_0]"
+                >
+                  Explore DigiGate Products
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
 
