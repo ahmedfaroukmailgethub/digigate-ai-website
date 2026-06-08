@@ -145,7 +145,7 @@ export default function DashboardPage() {
                       </motion.span>
                     </motion.div>
                     <a
-                      href="https://demo.digigate.ai"
+                      href="https://digigate-edu-open-platform.vercel.app"
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-2 rounded-xl bg-emerald-300/10 px-3 py-2 text-xs font-semibold text-emerald-200 transition hover:bg-emerald-300/20"
